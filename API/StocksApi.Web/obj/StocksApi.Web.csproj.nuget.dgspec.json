@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\StocksApi.Web.csproj": {}
+    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\StocksApi.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj": {
+    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj",
+        "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj",
         "projectName": "StocksApi.Core",
-        "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj",
+        "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj",
         "packagesPath": "C:\\Users\\a703408\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\obj\\",
+        "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -72,14 +72,14 @@
         }
       }
     },
-    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\StocksApi.Web.csproj": {
+    "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\StocksApi.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\StocksApi.Web.csproj",
+        "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\StocksApi.Web.csproj",
         "projectName": "StocksApi.Web",
-        "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\StocksApi.Web.csproj",
+        "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\StocksApi.Web.csproj",
         "packagesPath": "C:\\Users\\a703408\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\obj\\",
+        "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -99,8 +99,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj": {
-                "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj"
+              "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj": {
+                "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj"
               }
             }
           }

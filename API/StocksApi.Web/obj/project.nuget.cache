@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1pUQ+H33wnLtQeIqZGil2hLe2nQTOnzw9ef/wHJb4nGiGBgTcxfkgncgXdw7s6cW6RV+FakAbpMSme0fi+pwLQ==",
+  "dgSpecHash": "8MyHU4Y8AxK4YgoAJd05EvYIajbOeaqfGJ2lJSDmQuAhgPGw0ob1XSsl8TlirbeMyqsaC4U8el+IgYvMDQ3u+A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Web\\StocksApi.Web.csproj",
+  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Web\\StocksApi.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\a703408\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\a703408\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.0\\microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",

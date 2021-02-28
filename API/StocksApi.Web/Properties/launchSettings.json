@@ -15,7 +15,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "IEX_API_BASE_URL": "https://sandbox.iexapis.com/stable/",
+        "IEX_API_BASE_URL": "https://cloud.iexapis.com/v1/",
         "FINNHUB_API_BASE_URL": "https://finnhub.io/api/v1/",
         "IEX_API_TOKEN": "pk_a38f980b650d4543aad38ef5cd152bf9",
         "FINNHUB_API_TOKEN": "c0g58bv48v6ob1prfk40"
@@ -28,8 +28,8 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "IEX_API_BASE_URL": "https://sandbox.iexapis.com/stable",
-        "FINNHUB_API_BASE_URL": "https://finnhub.io/api/v1",
+        "IEX_API_BASE_URL": "https://cloud.iexapis.com/v1/",
+        "FINNHUB_API_BASE_URL": "https://finnhub.io/api/v1/",
         "IEX_API_TOKEN": "pk_a38f980b650d4543aad38ef5cd152bf9",
         "FINNHUB_API_TOKEN": "c0g58bv48v6ob1prfk40"
       }

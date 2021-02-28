@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dKyJKbcTckqaGTbvrGBXp4evI+v7BZWdiP9e/9i/wovnweFcHeB9mUFIrJPSorP1p040kSTc7Oz5MpwZPgZkJA==",
+  "dgSpecHash": "zGGnPvtMJQAmICmZ12uDoKi2T6QJcWhaUyKsfnU8q+Y0EIkQVCNbGf1LpJ+bthII0S/dRfB9y1VlmpMOmIIauQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Test\\StocksApi.Test.csproj",
+  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Test\\StocksApi.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\a703408\\.nuget\\packages\\castle.core\\4.4.0\\castle.core.4.4.0.nupkg.sha512",
     "C:\\Users\\a703408\\.nuget\\packages\\microsoft.codecoverage\\16.5.0\\microsoft.codecoverage.16.5.0.nupkg.sha512",

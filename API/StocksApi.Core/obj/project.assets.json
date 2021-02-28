@@ -761,11 +761,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj",
+      "projectUniqueName": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj",
       "projectName": "StocksApi.Core",
-      "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj",
+      "projectPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj",
       "packagesPath": "C:\\Users\\a703408\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\obj\\",
+      "outputPath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

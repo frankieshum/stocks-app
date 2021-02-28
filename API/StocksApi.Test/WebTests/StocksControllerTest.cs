@@ -61,7 +61,7 @@ namespace StocksApi.Test
         public void TestGetStock_200()
         {
             // Set up service result
-            var serviceResult = new Stock("AAA", "Company A");
+            var serviceResult = new StockDetail("AAA", "Company A", new StockPrice(123.45m, StockCurrency.EUR, DateTime.Today));
             _stocksService.Setup(a => a.GetStockAsync(It.IsAny<string>()))
                 .ReturnsAsync(serviceResult);
 
@@ -78,7 +78,7 @@ namespace StocksApi.Test
         public void TestGetStock_500()
         {
             // Set up service result
-            Stock serviceResult = null;
+            StockDetail serviceResult = null;
             _stocksService.Setup(a => a.GetStockAsync(It.IsAny<string>()))
                 .ReturnsAsync(serviceResult);
 

@@ -8,7 +8,7 @@ namespace StocksApi.Core.Services.Interfaces
     public interface IStocksService
     {
         Task<List<Stock>> SearchStocksAsync(string searchTerm);
-        Task<Stock> GetStockAsync(string symbol);
+        Task<StockDetail> GetStockAsync(string symbol);
         Task<StockHistory> GetStockHistoryAsync(string symbol, DateTime startDate, DateTime endDate);
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CSfHy9ZWydvi6vHl7f0IJCcEZPP5SiN53yF1TNdgDXESUtKxWblbfJI3be51UwvV/mmr13sLIGVbSn6dL7CSIA==",
+  "dgSpecHash": "MxmcSaxoRgkTLx3KSn9G9GmlepGt/rT08KMV8Dd8LvvcydhxExDYqgfEQ7dtyp/yqxoOZPCJ9lEArbIB0e9MCw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\StocksApi\\StocksApi.Core\\StocksApi.Core.csproj",
+  "projectFilePath": "C:\\Users\\a703408\\Documents\\Other\\Training\\Projects\\Stocks\\stocks-app\\API\\StocksApi.Core\\StocksApi.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\a703408\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\5.0.0\\microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
     "C:\\Users\\a703408\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.0\\microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",

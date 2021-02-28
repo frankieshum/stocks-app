@@ -35,20 +35,12 @@ namespace StocksApi.Core.Services
             try
             {
                 // Get search results from Finnhub API
-                HttpClient httpClient = _httpClientFactory.CreateClient("finnhub");
-                HttpResponseMessage apiResponse = await httpClient.GetAsync($"search?q={searchTerm}&token={_finnhubApiToken}");
-
-                if (!apiResponse.IsSuccessStatusCode)
-                {
-                    // Received not OK response from data source
-                    _logger.LogError("StocksService.{methodName}: Request to Finnhub API returned unexpected response '{status}'.", nameof(SearchStocksAsync), apiResponse.ReasonPhrase);
+                string contentJson = await GetDataFromApiAsync("iex", $"search?q={searchTerm}&token={_finnhubApiToken}");
+                if (string.IsNullOrEmpty(contentJson))
                     return null;
-                }
 
-                // Parse HTTP content to JSON
-                string contentJson = await apiResponse.Content.ReadAsStringAsync();
-                JToken searchResults = JObject.Parse(contentJson)["result"];
                 // Retrieve stock symbols and names
+                JToken searchResults = JObject.Parse(contentJson)["result"];
                 foreach (JToken searchResult in searchResults)
                 {
                     string symbol = searchResult["symbol"].ToString();
@@ -65,15 +57,40 @@ namespace StocksApi.Core.Services
         }
 
         /// <summary>
-        /// Gets stock for the specified symbol.
+        /// Gets stock detail for the specified symbol.
         /// </summary>
         /// <param name="symbol">The symbol for which to get the stock.</param>
-        /// <returns>A matching Stock object.</returns>
-        public async Task<Stock> GetStockAsync(string symbol)
+        /// <returns>A matching StockDetail object.</returns>
+        public async Task<StockDetail> GetStockAsync(string symbol)
         {
-            // TODO
-            // Call IEX API to get stock
-            throw new NotImplementedException();
+            try
+            {
+                // Get price (from IEX)
+                string quoteString = await GetDataFromApiAsync("iex", $"stock/{symbol}/quote/latestPrice?token={_iexApiToken}");
+                if (string.IsNullOrEmpty(quoteString))
+                    return null;
+
+                // Get stock info (from Finnhub)
+                string stockInfoJson = await GetDataFromApiAsync("finnhub", $"stock/profile2?symbol={symbol}&token={_finnhubApiToken}");
+                if (string.IsNullOrEmpty(stockInfoJson))
+                    return null;
+
+                // Ensure that stock info contains valid data
+                string currencyString = JObject.Parse(stockInfoJson)?["currency"]?.ToString();
+                if (!Enum.TryParse(currencyString, out StockCurrency currency))
+                    return null;
+
+                // Construct the response
+                string name = JObject.Parse(stockInfoJson)["name"].ToString();
+                decimal quote = decimal.Parse(quoteString);
+                var price = new StockPrice(quote, currency, DateTime.Today);
+                return new StockDetail(symbol, name, price);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "StocksService.GetStockAsync: Exception occurred while getting stock '{message}'.", ex.Message);
+            }
+            return null;
         }
 
         /// <summary>
@@ -88,6 +105,36 @@ namespace StocksApi.Core.Services
             // TODO
             // Call IEX API to get stock history
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Makes a GET request to the specified relative URI with the specified named HTTP client. 
+        /// </summary>
+        /// <param name="httpClientName">The name of the HTTP client.</param>
+        /// <param name="uri">The relative endpoint URI.</param>
+        /// <returns>Returns the HTTP response as a string, or null if the request was unsuccessful.</returns>
+        private async Task<string> GetDataFromApiAsync(string httpClientName, string uri)
+        {
+            try
+            {
+                HttpClient httpClient = _httpClientFactory.CreateClient(httpClientName);
+                HttpResponseMessage apiResponse = await httpClient.GetAsync(uri);
+                if (!apiResponse.IsSuccessStatusCode)
+                {
+                    // Received not OK response from data source
+                    _logger.LogError("StocksService.{methodName}: Request to external API returned unexpected response '{status}'. Request '{action} {uri}'.",
+                        nameof(SearchStocksAsync), apiResponse.ReasonPhrase, apiResponse.RequestMessage.Method.ToString(), apiResponse.RequestMessage.RequestUri.ToString());
+                    return null;
+                }
+                // Parse HTTP content to JSON
+                string content = await apiResponse.Content.ReadAsStringAsync();
+                return content;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "StocksService.{methodName}: Exception occurred while calling external API.", nameof(GetDataFromApiAsync));
+                return null;
+            }
         }
     }
 }
