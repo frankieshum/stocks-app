@@ -67,9 +67,9 @@ namespace StocksApi.Web.Controllers
         [ProducesResponseType(typeof(List<Stock>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
-        public async Task<IActionResult> GetStockHistory([FromRoute] string symbol, [FromQuery, Required] DateTime startDate, [FromQuery, Required] DateTime endDate)
+        public async Task<IActionResult> GetStockHistory([FromRoute] string symbol, [FromQuery, Required] DateRange range)
         {
-            StockHistory serviceResult = await _stocksService.GetStockHistoryAsync(symbol, startDate, endDate);
+            StockHistory serviceResult = await _stocksService.GetStockHistoryAsync(symbol, range);
 
             if (serviceResult == null)
                 return InternalServerErrorResult();

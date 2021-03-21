@@ -2,6 +2,17 @@
 {
     public enum StockCurrency
     {
-        GBP, USD, EUR
+        EUR,
+        GBP, 
+        USD
+    }
+
+    public enum DateRange
+    {
+        FIVEDAY,
+        ONEMONTH,
+        THREEMONTH,
+        SIXMONTH,
+        ONEYEAR
     }
 }

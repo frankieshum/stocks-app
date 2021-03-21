@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using StocksApi.Core.Utilities;
 
 namespace StocksApi.Core.Services
 {
@@ -31,16 +33,16 @@ namespace StocksApi.Core.Services
         /// <returns>A list of matching Stock objects.</returns>
         public async Task<List<Stock>> SearchStocksAsync(string searchTerm)
         {
-            var response = new List<Stock>();
             try
             {
                 // Get search results from Finnhub API
-                string contentJson = await GetDataFromApiAsync("iex", $"search?q={searchTerm}&token={_finnhubApiToken}");
+                string contentJson = await GetDataFromApiAsync("finnhub", $"search?q={searchTerm}&token={_finnhubApiToken}");
                 if (string.IsNullOrEmpty(contentJson))
                     return null;
 
                 // Retrieve stock symbols and names
                 JToken searchResults = JObject.Parse(contentJson)["result"];
+                var response = new List<Stock>();
                 foreach (JToken searchResult in searchResults)
                 {
                     string symbol = searchResult["symbol"].ToString();
@@ -89,22 +91,45 @@ namespace StocksApi.Core.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "StocksService.GetStockAsync: Exception occurred while getting stock '{message}'.", ex.Message);
+                return null;
             }
-            return null;
         }
 
         /// <summary>
         /// Gets list of historical prices for the specified symbol and period.
         /// </summary>
         /// <param name="symbol">The symbol for which to get the stock.</param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
+        /// <param name="range">The date range for which to get the history.</param>
         /// <returns>A StockHistory object for the specified stock and period.</returns>
-        public async Task<StockHistory> GetStockHistoryAsync(string symbol, DateTime startDate, DateTime endDate)
+        public async Task<StockHistory> GetStockHistoryAsync(string symbol, DateRange range)
         {
-            // TODO
-            // Call IEX API to get stock history
-            throw new NotImplementedException();
+            var response = new StockHistory();
+            try
+            {
+                // Get search results from IEX API
+                string contentJson = await GetDataFromApiAsync("iex", $"stock/{symbol}/chart/{range.ToShortString()}?token={_iexApiToken}");
+                if (string.IsNullOrEmpty(contentJson))
+                    return null;
+            
+                // Retrieve dates and prices
+                JArray historicalPrices = JArray.Parse(contentJson);
+                foreach (JObject historicalPrice in historicalPrices.OfType<JObject>())
+                {
+                    string date = historicalPrice["date"].ToString();
+                    string price = historicalPrice["close"].ToString();
+                    //var stockPrice = new StockPrice()
+                    //
+                    //string symbol = searchResult["symbol"].ToString();
+                    //string description = searchResult["description"].ToString();
+                    //response.Add(new Stock(symbol, description));
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "StocksService.{methodName}: Exception occurred '{message}'.", nameof(SearchStocksAsync), ex.Message);
+                return null;
+            }
         }
 
         /// <summary>

@@ -9,6 +9,6 @@ namespace StocksApi.Core.Services.Interfaces
     {
         Task<List<Stock>> SearchStocksAsync(string searchTerm);
         Task<StockDetail> GetStockAsync(string symbol);
-        Task<StockHistory> GetStockHistoryAsync(string symbol, DateTime startDate, DateTime endDate);
+        Task<StockHistory> GetStockHistoryAsync(string symbol, DateRange range);
     }
 }
