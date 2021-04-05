@@ -97,11 +97,11 @@ namespace StocksApi.Test
         {
             // Set up service result
             var serviceResult = new StockHistory() { Stock = new Stock("AAA", "Company A") };
-            _stocksService.Setup(a => a.GetStockHistoryAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            _stocksService.Setup(a => a.GetStockHistoryAsync(It.IsAny<string>(), It.IsAny<DateRange>()))
                 .ReturnsAsync(serviceResult);
 
             // Run test
-            var result = _stocksController.GetStockHistory("AAA", DateTime.Now, DateTime.Now).Result;
+            var result = _stocksController.GetStockHistory("AAA", DateRange.FIVEDAY).Result;
 
             // Verify result
             var resultObj = (OkObjectResult)result;
@@ -114,11 +114,11 @@ namespace StocksApi.Test
         {
             // Set up service result
             StockHistory serviceResult = null;
-            _stocksService.Setup(a => a.GetStockHistoryAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+            _stocksService.Setup(a => a.GetStockHistoryAsync(It.IsAny<string>(), It.IsAny<DateRange>()))
                 .ReturnsAsync(serviceResult);
 
             // Run test
-            var result = _stocksController.GetStockHistory("AAA", DateTime.Now, DateTime.Now).Result;
+            var result = _stocksController.GetStockHistory("AAA", DateRange.FIVEDAY).Result;
 
             // Verify result
             var resultObj = (ObjectResult)result;
