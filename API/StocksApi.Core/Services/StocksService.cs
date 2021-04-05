@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using StocksApi.Core.Utilities;
+using System.Globalization;
 
 namespace StocksApi.Core.Services
 {
@@ -106,23 +107,28 @@ namespace StocksApi.Core.Services
             var response = new StockHistory();
             try
             {
-                // Get search results from IEX API
-                string contentJson = await GetDataFromApiAsync("iex", $"stock/{symbol}/chart/{range.ToShortString()}?token={_iexApiToken}");
-                if (string.IsNullOrEmpty(contentJson))
+                // Get stock price history from IEX API
+                string stockHistoryJson = await GetDataFromApiAsync("iex", $"stock/{symbol}/chart/{range.ToShortString()}?token={_iexApiToken}");
+
+                // Get stock info from Finnhub API
+                string stockInfoJson = await GetDataFromApiAsync("finnhub", $"stock/profile2?symbol={symbol}&token={_finnhubApiToken}");
+
+                if (string.IsNullOrEmpty(stockHistoryJson) || string.IsNullOrEmpty(stockInfoJson))
                     return null;
             
                 // Retrieve dates and prices
-                JArray historicalPrices = JArray.Parse(contentJson);
+                JArray historicalPrices = JArray.Parse(stockHistoryJson);
                 foreach (JObject historicalPrice in historicalPrices.OfType<JObject>())
                 {
-                    string date = historicalPrice["date"].ToString();
-                    string price = historicalPrice["close"].ToString();
-                    //var stockPrice = new StockPrice()
-                    //
-                    //string symbol = searchResult["symbol"].ToString();
-                    //string description = searchResult["description"].ToString();
-                    //response.Add(new Stock(symbol, description));
+                    DateTime date = DateTime.ParseExact(historicalPrice["date"].ToString(), "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    decimal price = decimal.Parse(historicalPrice["close"].ToString());
+                    var stockPrice = new StockPrice(price, StockCurrency.USD, date);
+                    response.PriceHistory.Add(stockPrice);
                 }
+
+                // Retrieve stock name
+                string description = JObject.Parse(stockInfoJson)["name"].ToString();
+                response.Stock = new Stock(symbol, description);
                 return response;
             }
             catch (Exception ex)
@@ -147,8 +153,8 @@ namespace StocksApi.Core.Services
                 if (!apiResponse.IsSuccessStatusCode)
                 {
                     // Received not OK response from data source
-                    _logger.LogError("StocksService.{methodName}: Request to external API returned unexpected response '{status}'. Request '{action} {uri}'.",
-                        nameof(SearchStocksAsync), apiResponse.ReasonPhrase, apiResponse.RequestMessage.Method.ToString(), apiResponse.RequestMessage.RequestUri.ToString());
+                    _logger.LogError("StocksService.{methodName}: Request to '{client}' API returned unexpected response '{status}'. Request '{action} {uri}'.",
+                        nameof(SearchStocksAsync), httpClientName, apiResponse.ReasonPhrase, apiResponse.RequestMessage.Method.ToString(), apiResponse.RequestMessage.RequestUri.ToString());
                     return null;
                 }
                 // Parse HTTP content to JSON
@@ -157,7 +163,7 @@ namespace StocksApi.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "StocksService.{methodName}: Exception occurred while calling external API.", nameof(GetDataFromApiAsync));
+                _logger.LogError(ex, "StocksService.{methodName}: Exception occurred while calling '{client}' API.", nameof(GetDataFromApiAsync), httpClientName);
                 return null;
             }
         }
