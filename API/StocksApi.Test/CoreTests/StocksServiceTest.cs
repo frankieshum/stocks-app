@@ -3,6 +3,7 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using StocksApi.Core.Models;
 using StocksApi.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -155,10 +156,9 @@ namespace StocksApi.Test
         public void TestGetStockAsync_UnexpectedResponse_Request2()
         {
             // Create quote HTTP response from external API
-            string quoteString = "123.45";
             var quoteHttpResponse = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(quoteString, Encoding.UTF8, "application/html")
+                Content = new StringContent("123.45", Encoding.UTF8, "application/html")
             };
             // Create stock data HTTP response from external API
             var stockDataHttpResponse = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -184,6 +184,124 @@ namespace StocksApi.Test
 
             // Run test
             var result = _stocksService.GetStockAsync("abc").Result;
+
+            // Verify result
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        [Description("Test that service returns valid object if data retrieved successfully.")]
+        public void TestGetStockHistoryAsync_OK()
+        {
+            // Create data from external API
+            var externalStockHistory = new dynamic[]
+            {
+                new
+                {
+                    date = "2021-03-01",
+                    close = "123.45"
+                },
+                new
+                {
+                    date = "2021-03-02",
+                    close = "234.56"
+                }
+            };
+            dynamic externalStockData = new
+            {
+                name = "Some Company"
+            };
+
+            // Create quote HTTP response from external API
+            var stockHistoryHttpResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(externalStockHistory), Encoding.UTF8, "application/html")
+            };
+            // Create stock data HTTP response from external API
+            var stockDataHttpResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(externalStockData), Encoding.UTF8, "application/json")
+            };
+
+            // Set up HTTP client result
+            _httpMessageHandler.Protected().SetupSequence<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(stockHistoryHttpResponse)
+                .ReturnsAsync(stockDataHttpResponse);
+            _httpClientFactory.Setup(a => a.CreateClient(It.IsAny<string>())).Returns(_httpClient.Object);
+
+            // Run test
+            var symbol = "abc";
+            var result = _stocksService.GetStockHistoryAsync(symbol, DateRange.FIVEDAY).Result;
+
+            // Verify result
+            var stockResult = result.Stock;
+            Assert.AreEqual(externalStockData.name, stockResult.Name);
+            Assert.AreEqual(symbol, stockResult.Symbol);
+            var historyResult = result.PriceHistory;
+            Assert.AreEqual(externalStockHistory.Length, historyResult.Count);
+            Assert.AreEqual(externalStockHistory[0].date, historyResult[0].Date.ToString("yyyy-MM-dd"));
+            Assert.AreEqual(externalStockHistory[0].close, historyResult[0].Price.ToString());
+            Assert.AreEqual(StockCurrency.USD, historyResult[0].Currency);
+        }
+
+        [Test]
+        [Description("Test that service returns null object if data source returns unexpected response for first request.")]
+        public void TestGetStockHistoryAsync_UnexpectedResponse_Request1()
+        {
+            // Create quote HTTP response from external API
+            var stockHistoryHttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            // Set up HTTP client result
+            _httpMessageHandler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(stockHistoryHttpResponse);
+            _httpClientFactory.Setup(a => a.CreateClient(It.IsAny<string>())).Returns(_httpClient.Object);
+
+            // Run test
+            var result = _stocksService.GetStockHistoryAsync("abc", DateRange.FIVEDAY).Result;
+
+            // Verify result
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        [Description("Test that service returns null object if data source returns unexpected response for second request.")]
+        public void TestGetStockHistoryAsync_UnexpectedResponse_Request2()
+        {
+            // Create quote HTTP response from external API
+            var externalStockHistory = new dynamic[]
+            {
+                new
+                {
+                    date = "2021-03-01",
+                    close = "123.45"
+                }
+            };
+            var stockHistoryHttpResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(externalStockHistory), Encoding.UTF8, "application/html")
+            };
+            var stockDataHttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            // Set up HTTP client result
+            _httpMessageHandler.Protected().SetupSequence<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(stockHistoryHttpResponse)
+                .ReturnsAsync(stockDataHttpResponse);
+            _httpClientFactory.Setup(a => a.CreateClient(It.IsAny<string>())).Returns(_httpClient.Object);
+
+            // Run test
+            var result = _stocksService.GetStockHistoryAsync("abc", DateRange.FIVEDAY).Result;
+
+            // Verify result
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        [Description("Test that service returns null object if exception occurs.")]
+        public void TestGetStockHistoryAsync_Exception()
+        {
+            // Set up HTTP client result
+            _httpClientFactory.Setup(a => a.CreateClient(It.IsAny<string>())).Throws(new Exception());
+
+            // Run test
+            var result = _stocksService.GetStockHistoryAsync("abc", DateRange.FIVEDAY).Result;
 
             // Verify result
             Assert.IsNull(result);
