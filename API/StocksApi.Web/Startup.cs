@@ -31,7 +31,7 @@ namespace StocksApi
             services.AddSwaggerGen();
             services.AddHttpClients();
             services.AddSingleton<ILogger, Logger<StocksService>>();
-            services.AddTransient<IStocksService, StocksService>();
+            services.AddScoped<IStocksService, StocksService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +40,7 @@ namespace StocksApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "InvestingAppAPI V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "StocksApp API V1");
             });
 
             if (env.IsDevelopment())

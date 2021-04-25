@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StocksApi.Core.Models;
 using StocksApi.Core.Services.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -51,9 +50,6 @@ namespace StocksApi.Web.Controllers
             if (serviceResult == null)
                 return InternalServerErrorResult();
 
-            if (string.IsNullOrEmpty(serviceResult.Name))
-                return NotFoundResult();
-
             return Ok(serviceResult);
         }
 
@@ -88,19 +84,6 @@ namespace StocksApi.Web.Controllers
                 Detail = "Something went wrong. Please try again!"
             };
             return StatusCode(500, details);
-        }
-
-        /// <summary>
-        /// Creates an object result for NotFound HTTP response.
-        /// </summary>
-        private ObjectResult NotFoundResult()
-        {
-            var details = new ProblemDetails() { 
-                Status = 404,
-                Title = "Not Found",
-                Detail = "The requested resource was not found."
-            };
-            return NotFound(details);
         }
     }
 }

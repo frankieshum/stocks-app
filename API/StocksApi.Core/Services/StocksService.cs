@@ -78,15 +78,10 @@ namespace StocksApi.Core.Services
                 if (string.IsNullOrEmpty(stockInfoJson))
                     return null;
 
-                // Ensure that stock info contains valid data
-                string currencyString = JObject.Parse(stockInfoJson)?["currency"]?.ToString();
-                if (!Enum.TryParse(currencyString, out StockCurrency currency))
-                    return null;
-
                 // Construct the response
                 string name = JObject.Parse(stockInfoJson)["name"].ToString();
                 decimal quote = decimal.Parse(quoteString);
-                var price = new StockPrice(quote, currency, DateTime.Today);
+                var price = new StockPrice(quote, StockCurrency.USD, DateTime.Today);
                 return new StockDetail(symbol, name, price);
             }
             catch (Exception ex)
